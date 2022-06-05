@@ -1,12 +1,15 @@
-# ventaLibre
+# ventaLibre 
+
+--- Aplicacion utilizando estructuras de datos ---
+
 Se requiere implementar un sistema  de venta de artículos usados que denominaremos VentaLibre.
 
 La información será mantenida a través de archivos binarios  reunidos bajo diversos Métodos Estructurales (ME). Estos son:
 
--	ME de Usuarios (Hash sin colisiones)
--	ME de Categorías (a elección del alumno)
+-	ME de Usuarios (Hash con colisiones - Abierto)
+-	ME de Categorías (Listas doblemente enlazadas)
 -	ME de Publicaciones de Artículos (Arboles binarios índices AVL)
--	ME de Compras Realizadas (a elección del alumno)
+-	ME de Compras Realizadas (Colas parciales)
 -	ME de Mensajes compartidos entre usuarios (Colas parciales)
 
 Se recomienda que  los ME residan  en una carpeta compartida de red, cuyos archivos serán accesibles por todos los programas VentaLibre que se necesiten correr desde las diferentes terminales.
@@ -18,7 +21,6 @@ Queda en claro entonces que NO se trata de una aplicación web sino de red local
 DEFINICION DE MÉTODOS
 
 a)	ME de Usuarios
-************************************************************************
 Tiene por objeto registrar a todos los usuarios de VentaLibre. Como se ha dicho, es un ME compartido (por lo cual debe residir en una carpeta de red  -local, por ejemplo- y así común a todas las conexiones). 
 Las personas que van a usar el servicio se registran con su email y algunos datos personales. Un usuario sólo podrá hacer operaciones (comprar y vender) en el sistema si está registrado aquí. Quienes accedan al sistema sin identificarse solo podrán consultar las publicaciones de ventas. En este ME también se podrá visualizar el Estado de cada usuario, su última fecha de conexión y si se encuentra o no en línea (conectado). Los usuarios actualizan esta información cada vez que se conectan a VentaLibre. 
 Para ello tendremos un ME basado en un archivo Hash abierto (con colisiones) de MAX= 80 registros. La clave de búsqueda es el (email). Esta clave es la que debe usarse como entrada a la función Hash que dará la posición física del elemento. 
@@ -41,7 +43,6 @@ Una vez registrado, el usuario podrá realizar publicaciones de ventas o ser com
 
 
 b)	ME de CATEGORIAS
-************************************************************************
 Tiene por objeto registrar las categorías de artículos que forman parte de la publicación. Por ejemplo: herramientas eléctricas, instrumentos musicales, etc. Las altas-bajas-modificaciones de este ME solo son accesibles para el usuario que tiene clave de administrador.  No se podrán hacer modificaciones ni bajas, si la Categoría dispone de Artículos (vendidos o a vender).
  
 Se deja a consideración del alumno la implementación del ME que considere más adecuado para este modelo de datos, según su eficiencia. En la documentación a entregar, deberá justificar los motivos de la elección.
@@ -55,8 +56,6 @@ Se deja a consideración del alumno la implementación del ME que considere más
 -	(campos a definir según el modelo de datos que se opte)
 
 c)	ME de ARTICULOS PUBLICADOS 
-************************************************************************
-
 En este método se almacenan las publicaciones de venta que realizan los vendedores del sistema. Se trata de un ME que cuenta con 2 árboles binarios de búsqueda sobre un archivo de datos. Uno organiza los artículos por vendedores y el otro por categorías. Las estructuras de datos son los siguientes:
 
 1 c) el archivo PUBLICADOS.CON
@@ -98,8 +97,6 @@ Los archivos índices son de tipo AVL. Por tal motivo todas las inserciones y el
 Los recorridos que se efectúen sobre PUBLICADOS.DAT deberán realizarse a través de algunos de los índices.
 
 d)	ME de Ventas Realizadas 
-************************************************************************
-
 Aquí se van trasladando las operaciones de venta, a medida que se van cerrando las diferentes operaciones (solo las ventas con Estado=3). Es decir, los artículos cuya publicación se vence o que son suspendidos por el usuario, NO se colocarán aquí.
 Se deja a consideración del alumno la implementación del ME que considere más adecuado para este modelo de datos, según su eficiencia. En la documentación a entregar, deberá justificar los motivos de la elección.
 
@@ -121,7 +118,6 @@ Se deja a consideración del alumno la implementación del ME que considere más
 -	Proximo, Anterior: Enlaces de los elementos que colisionan en la posición
 
 e)	ME de Conversaciones 
-************************************************************************
 Tiene por objeto ser el espacio donde los compradores hacen consultas al vendedor del artículo. 
 Se trata de ME compactado que maneja COLAS parciales (el primero hace de índice del segundo) . Esto significa que cada conversación estará dada por un conjunto de mensajes almacenados en colas parciales en MENSAJES.DAT
 
@@ -143,7 +139,6 @@ Se trata de ME compactado que maneja COLAS parciales (el primero hace de índice
 -	Borrados
 
  
-
 
 APLICACIÓN
 
